@@ -23,9 +23,6 @@ app.use(compression());
 
 app.use("/", router);
 
-
-
-
 /* catch 404 and forward to error handler */
 
 app.use(function(req, res, next) {
@@ -35,8 +32,6 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
     res.locals.message = err.messageM
     res.locals.error = req.app.get("env") === "development" ? err : {};
-
-    // rendering, might have to take this out
     res.status(err.status || 500);
     res.send("error");
 });
