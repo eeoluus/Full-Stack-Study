@@ -48,17 +48,4 @@ try {
     console.log(err);
 }
 
-/* 
-mongoose.set("strictQuery", false);
-
-const mongoDB = process.env.ATLAS_URI;
-
-main().catch((err) => console.log(err))
-
-async function main() {
-    await mongoose.connect(mongoDB);
-    console.log("Successfully connected to MongoDB!")
-    console.log(`API available at PORT: ${process.env.PORT}`)
-}; */
-
 export default app;
