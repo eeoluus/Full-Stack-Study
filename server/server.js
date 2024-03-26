@@ -6,6 +6,7 @@ import express, { urlencoded } from "express";
 import logger from "morgan";
 import mongoose from "mongoose";
 /* import rateLimit from "express-rate-limit"; */
+import router from "./api/routes.js";
 
 const app = express();
 
@@ -18,7 +19,14 @@ app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(compression());
 
-// catch 404 and forward to error handler
+/* api setup */
+
+app.use("/", router);
+
+
+
+
+/* catch 404 and forward to error handler */
 
 app.use(function(req, res, next) {
     next(createError(404));
@@ -30,7 +38,7 @@ app.use(function(err, req, res, next) {
 
     // rendering, might have to take this out
     res.status(err.status || 500);
-    res.render("error");
+    res.send("error");
 });
 
 mongoose.set("strictQuery", false);
@@ -42,6 +50,7 @@ main().catch((err) => console.log(err))
 async function main() {
     await mongoose.connect(mongoDB);
     console.log("Successfully connected to MongoDB!")
+    console.log(`API available at PORT: ${process.env.PORT}`)
 };
 
 export default app;
