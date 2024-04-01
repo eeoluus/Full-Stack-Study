@@ -8,7 +8,8 @@ const dreamSchema = Schema({
         type: String,
         required: true,
         enum: ["Ordinary", "Nightmare"]
-    }
+    },
+    dreamer: { type: Schema.Types.ObjectId, ref: "User", required: true }
 });
 
 export default mongoose.model("Dream", dreamSchema);
