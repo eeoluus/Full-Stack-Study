@@ -54,7 +54,7 @@ export const userDetail = asyncHandler(async (req, res, next) => {
         return next(err);
     }
 
-    res.json({
+    res.status(200).json({
         user: user,
         userDreams: allDreamsByUser
     });
@@ -82,7 +82,13 @@ export const userUpdate = [
             name: req.body.name,
             age: req.body.age,
             _id: req.params.id
-        })
+        });
+
+        /* if (user === null) {
+            const err = new Error("User not found");
+            err.status = 404;
+            return next(err);
+        } */
 
         if (!errors.isEmpty()) {
             res.status(400).json({
@@ -91,7 +97,11 @@ export const userUpdate = [
             });
             return;
         } else {
-            const updatedUser = await User.findByIdAndUpdate(req.params.id, user, {});
+            const updatedUser = await User.findByIdAndUpdate(
+                req.params.id, 
+                user, 
+                { runValidators: true, new: true }
+            );
             res.status(200).json({
                 user: user
             });
@@ -100,15 +110,14 @@ export const userUpdate = [
 ];
 
 export const userDelete = asyncHandler(async (req, res, next) => {
-    /* res.send("NOT IMPLEMENTED: user delete") */
 
     const [user, allDreamsByUser] = await Promise.all([
         User.findById(req.params.id).exec(),
         Dream.find({ dreamer: req.params.id }, "summary quality").exec()
     ]);
 
-    if (allDreamsByUser > 0) {
-        res.json({
+    if (allDreamsByUser.length > 0) {
+        res.status(400).json({
             user: user,
             userDreams: allDreamsByUser
         });
