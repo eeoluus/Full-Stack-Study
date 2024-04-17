@@ -48,6 +48,7 @@ export const userDetail = asyncHandler(async (req, res, next) => {
         Dream.find({ dreamer: req.params.id }, "summary quality").exec()
     ]);
 
+    /* Check in other handlers that assume an existing user? */
     if (user === null) {
         const err = new Error("User not found");
         err.status = 404;
@@ -83,12 +84,6 @@ export const userUpdate = [
             age: req.body.age,
             _id: req.params.id
         });
-
-        /* if (user === null) {
-            const err = new Error("User not found");
-            err.status = 404;
-            return next(err);
-        } */
 
         if (!errors.isEmpty()) {
             res.status(400).json({
