@@ -46,15 +46,15 @@ export const dreamDetail = asyncHandler(async (req, res, next) => {
     
     const dream = await Dream.findById(req.params.id).populate("dreamer").exec();
 
+    console.log(dream);
+
     if (dream === null) {
         const err = new Error("Dream not found");
         err.status = 404;
         return next(err);
     } 
     
-    res.status(200).json({
-        dream: dream
-    });
+    res.status(200).json(dream);
 });
 
 export const dreamUpdate = [

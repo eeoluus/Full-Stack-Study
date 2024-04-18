@@ -1,5 +1,6 @@
 import compression from "compression";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import createError from "http-errors";
 import express, { urlencoded } from "express";
 /* import helmet from "helmet"; */
@@ -13,6 +14,7 @@ const app = express();
 /* middleware setup */
 // still missing helmet and rate limiter
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(urlencoded({ extended: false }));

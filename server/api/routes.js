@@ -12,6 +12,7 @@ router.post("/user", userController.userCreate);
 router.get("/user/:id", userController.userDetail);
 router.patch("/user/:id", userController.userUpdate);
 router.delete("/user/:id", userController.userDelete);
+router.get("/users", userController.userList)
 
 /* DREAMS */
 

@@ -123,3 +123,10 @@ export const userDelete = asyncHandler(async (req, res, next) => {
     }
 
 });
+
+export const userList = asyncHandler(async (req, res, next) => {
+    
+    const users = await User.find({}).exec()
+
+    res.status(200).json(users)
+})
