@@ -8,6 +8,7 @@ import App from "./App.jsx";
 import UserList from "./components/UserList.jsx";
 import DreamDetail from "./components/DreamDetail.jsx";
 import UserDetail from "./components/UserDetail.jsx";
+import UserForm from "./components/UserForm.jsx";
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -20,35 +21,23 @@ const router = createBrowserRouter([
         element: <UserList />
       },
       {
+        path: '/user/create',
+        element: <UserForm />,
+      },
+      {
         path: "/user/:id",
         element: <UserDetail />
+      },
+      {
+        path: '/user/:id/update',
+        element: <UserForm />,
       },
       {
         path: '/dream/:id',
         element: <DreamDetail />,
       }
     ]
-  },
-  /* {
-    path: '/user/create',
-    element: <App />,
-    children: [
-      {
-        path: '/user/create',
-        element: <UserForm />,
-      }
-    ]
-  },
-  {
-    path: '/user/:id/update',
-    element: <App />,
-    children: [
-      {
-        path: '/user/:id/update',
-        element: <UserForm />,
-      }
-    ]
-  } */
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

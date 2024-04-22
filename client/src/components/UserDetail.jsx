@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import Dream from "./Dream.jsx";
 
 export default function UserDetail() {
@@ -56,9 +56,24 @@ export default function UserDetail() {
         )
     )
 
+    async function deleteUser(id) {
+        await fetch(`http://localhost:3000/user/${id}`, {
+            "method": "DELETE"
+        });
+        navigate("/");
+    }
+
     return (
         <>
             <div><b>{user.name}'s dreams, age: {user.age}</b></div>
+            <Link to={`/user/${params.id}/update`}>
+                Edit
+            </Link>
+            <button
+                type="button"
+                onClick={() => {deleteUser(params.id)}}>
+                Delete
+            </button>
             <ul>
                 {dreamList}
             </ul>

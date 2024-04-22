@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 export default function DreamDetail() {
 
     const [summary, setSummary] = useState("");
+    const [quality, setQuality] = useState("");
     const params = useParams();
     const navigate = useNavigate();
 
@@ -39,7 +40,7 @@ export default function DreamDetail() {
 
     return (
         <> {/* Should preferably only include a shortened summary. */}
-            Here is your dream: {summary} 
+            Here is your {quality}: {summary} 
         </>
     );
 }
