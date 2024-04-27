@@ -82,35 +82,44 @@ export default function UserForm() {
     }
 
     return (
-        <>
-            <form onSubmit={onSubmit}>
-                <label htmlFor="name">
-                    Name
-                </label>
-                <input 
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="Jane Doe"
-                    value={form.name}
-                    onChange={(e) => updateForm({ name: e.target.value })}
-                />
-                <label htmlFor="age">
-                    Age
-                </label>
-                <input 
-                    type="text"
-                    name="age"
-                    id="age"
-                    placeholder="1"
-                    value={form.age}
-                    onChange={(e) => updateForm({ age: e.target.value })}
-                />
-                <input 
-                    type="submit"
-                    value="save user"
-                />
-            </form>
-        </>
+        <form onSubmit={onSubmit}>
+            <ul>
+                <li>
+                    <label htmlFor="name">
+                        Name:
+                    </label>
+                    <input 
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder="JaneDoe"
+                        value={form.name}
+                        onChange={
+                            (e) => updateForm({ name: e.target.value })
+                        }
+                    />
+                </li>
+                <li>
+                    <label htmlFor="age">
+                        Age:
+                    </label>
+                    <input 
+                        type="text"
+                        name="age"
+                        id="age"
+                        placeholder="1"
+                        value={form.age}
+                        onChange={
+                            (e) => updateForm({ age: e.target.value })
+                        }
+                    />
+                </li>
+                <li>
+                    <button type="submit" className="user">
+                        Save
+                    </button>
+                </li>
+            </ul>
+        </form>
     )
 }

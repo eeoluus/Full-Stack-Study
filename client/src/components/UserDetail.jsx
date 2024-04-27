@@ -64,19 +64,36 @@ export default function UserDetail() {
     }
 
     return (
-        <>
-            <div><b>{user.name}'s dreams, age: {user.age}</b></div>
-            <Link to={`/user/${params.id}/update`}>
-                Edit
-            </Link>
-            <button
-                type="button"
-                onClick={() => {deleteUser(params.id)}}>
-                Delete
-            </button>
-            <ul>
-                {dreamList}
-            </ul>
-        </>
+        <div class="top-lvl-formatting">
+            <aside>
+                <Link 
+                    to={`/user/${params.id}/update`}
+                    className="user">
+                    Edit
+                </Link>
+                <button
+                    type="button"
+                    className="user"
+                    onClick={
+                        () => {deleteUser(params.id)}
+                    }>
+                    Delete
+                </button>
+            </aside>
+
+            <main>
+                <div class="bottom-lvl-formatting">
+                    <span>{user.name}'s dreams, age: {user.age}</span>
+                    <Link 
+                        to="/dream/create"
+                        className="dream">
+                        Create a new dream
+                    </Link>
+                </div>
+                <section>
+                    <ul>{dreamList}</ul>
+                </section>
+            </main>
+        </div>
     );
 }
