@@ -7,6 +7,7 @@ import {
 import App from "./App.jsx";
 import UserList from "./components/UserList.jsx";
 import DreamDetail from "./components/DreamDetail.jsx";
+import DreamForm from "./components/DreamForm.jsx";
 import UserDetail from "./components/UserDetail.jsx";
 import UserForm from "./components/UserForm.jsx";
 import "./index.css";
@@ -33,8 +34,16 @@ const router = createBrowserRouter([
         element: <UserForm />,
       },
       {
+        path: '/dream/create',
+        element: <DreamForm />,
+      },
+      {
         path: '/dream/:id',
         element: <DreamDetail />,
+      },
+      {
+        path: '/dream/:id/update',
+        element: <DreamForm />,
       }
     ]
   }

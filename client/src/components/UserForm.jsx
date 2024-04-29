@@ -13,7 +13,6 @@ export default function UserForm() {
 
     useEffect(() => {
         async function getUser() {
-
             const id = params.id?.toString() || undefined;
             if (!id) return;
 
@@ -61,6 +60,7 @@ export default function UserForm() {
                     },
                     body: JSON.stringify(user)
                 });
+                navigate("/");
             } else {
                 response = await fetch(`http://localhost:3000/user/${params.id}`, {
                     method: "PATCH",
@@ -69,6 +69,7 @@ export default function UserForm() {
                     },
                     body: JSON.stringify(user)
                 });
+                navigate(`/user/${params.id}`);
             }
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -77,49 +78,38 @@ export default function UserForm() {
             console.error("A problem occurred adding or updating a user: ", error);
         } finally {
             setForm({ name: "", age: "" });
-            navigate("/");
         }
     }
 
     return (
-        <form onSubmit={onSubmit}>
-            <ul>
-                <li>
-                    <label htmlFor="name">
-                        Name:
-                    </label>
-                    <input 
-                        type="text"
-                        name="name"
-                        id="name"
-                        placeholder="JaneDoe"
-                        value={form.name}
-                        onChange={
-                            (e) => updateForm({ name: e.target.value })
-                        }
-                    />
-                </li>
-                <li>
-                    <label htmlFor="age">
-                        Age:
-                    </label>
-                    <input 
-                        type="text"
-                        name="age"
-                        id="age"
-                        placeholder="1"
-                        value={form.age}
-                        onChange={
-                            (e) => updateForm({ age: e.target.value })
-                        }
-                    />
-                </li>
-                <li>
-                    <button type="submit" className="user">
-                        Save
-                    </button>
-                </li>
-            </ul>
+        <form className="form-formatting" onSubmit={onSubmit}>
+            <label htmlFor="name">
+                Name:
+            </label>
+            <input 
+                type="text"
+                name="name"
+                id="name"
+                placeholder="JaneDoe"
+                value={form.name}
+                onChange={
+                    (e) => updateForm({ name: e.target.value })
+                } />
+            <label htmlFor="age">
+                Age:
+            </label>
+            <input 
+                type="text"
+                name="age"
+                id="age"
+                placeholder="1"
+                value={form.age}
+                onChange={
+                    (e) => updateForm({ age: e.target.value })
+                } />
+            <button type="submit" className="user">
+                Save
+            </button>
         </form>
-    )
+    );
 }

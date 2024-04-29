@@ -64,7 +64,7 @@ export default function UserDetail() {
     }
 
     return (
-        <div class="top-lvl-formatting">
+        <div className="top-lvl-formatting">
             <aside>
                 <Link 
                     to={`/user/${params.id}/update`}
@@ -82,10 +82,10 @@ export default function UserDetail() {
             </aside>
 
             <main>
-                <div class="bottom-lvl-formatting">
+                <div className="bottom-lvl-formatting">
                     <span>{user.name}'s dreams, age: {user.age}</span>
                     <Link 
-                        to="/dream/create"
+                        to={`/dream/create?user=${params.id}`}
                         className="dream">
                         Create a new dream
                     </Link>

@@ -53,11 +53,35 @@ main {
   flex: 4;
 }
 
+section {
+  /* display: flex; */
+ /*  background-color: aqua; */
+  text-align: start;
+}
+
 aside {
   flex: 1;
   margin-right: 16px;
-  background: var(--sidebar-color);
+
+  border-image-source: url(border.svg);
+  border-image-slice: 0 20;
+ /*  border: 4px solid var(--nighthawk-color) */
+
+  border-right: 16px solid var(--nighthawk-color); 
+
+  /* border-image: url("https://picsum.photos/200/300") 30; */
+ /*  border-image-slice: 30; */
+
+  /* background: var(--sidebar-color); */
 }
+
+/* aside::after {
+  content: "|";
+  position: absolute;
+  font-family: Mistral;
+  font-size: 8em;
+  color: var(--nighthawk-color);
+} */
 
 aside a,
 aside button {
@@ -73,8 +97,23 @@ label {
   flex: 1;
 }
 
-input {
+input, textarea {
   flex: 4;
+  font-family: inherit;
+  font-size: small;
+  color: white;
+  background-color: var(--sidebar-color);
+  border: none;
+}
+
+:focus   {
+  outline: 2px solid var(--nighthawk-color);
+  outline-offset: -1px;
+  border-radius: 1px;
+}
+
+textarea {
+  resize: none;
 }
 
 button {
@@ -83,6 +122,9 @@ button {
   border-radius: 8px;
   background-color: inherit;
   cursor: pointer;
+
+ /*  font-family: inherit; */
+  font-size: inherit;
 }
 
 .nighthawk {
@@ -105,16 +147,31 @@ button {
 
 ul {
   list-style: none;
+  padding-left: 4px;
 }
 
 li + li {
   margin-top: 0.3em;
 }
 
-.bottom-lvl-formatting * + * {
-  margin-left: 1.3em;
+.bottom-lvl-formatting {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px 10px;
+  /* margin-left: 1.3em; */
+  border-image-source: url(horizontal-border.svg);
+  border-image-slice: 100 0;
+ /*  border: 4px solid var(--nighthawk-color) */
+
+  padding-bottom: 8px;
+  border-bottom: 4px solid var(--nighthawk-color);
 }
 
+.form-formatting {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 10px 10px;
+}
 /* nav * {
   color: #d23c40;
   font-family: Mistral;
