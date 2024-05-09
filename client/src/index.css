@@ -39,6 +39,11 @@ body {
 
 header {
   margin-bottom: 16px;
+  padding-bottom: 8px;
+
+  border-image-source: url(assets/horizontal-border.svg);
+  border-image-slice: 100 0;
+  border-bottom: 4px solid var(--nighthawk-color);
 }
 
 nav a {
@@ -63,16 +68,11 @@ aside {
   flex: 1;
   margin-right: 16px;
 
-  border-image-source: url(border.svg);
-  border-image-slice: 0 20;
- /*  border: 4px solid var(--nighthawk-color) */
+  border-image: url(assets/vertical-border.svg);
+  border-image-slice: 0 30;
+  /* border: 4px solid var(--nighthawk-color); */
 
   border-right: 16px solid var(--nighthawk-color); 
-
-  /* border-image: url("https://picsum.photos/200/300") 30; */
- /*  border-image-slice: 30; */
-
-  /* background: var(--sidebar-color); */
 }
 
 /* aside::after {
@@ -159,12 +159,13 @@ li + li {
   grid-template-columns: 2fr 1fr;
   gap: 10px 10px;
   /* margin-left: 1.3em; */
-  border-image-source: url(horizontal-border.svg);
+  border-image-source: url(assets/horizontal-border.svg);
   border-image-slice: 100 0;
+  border-bottom: 4px solid var(--nighthawk-color);
  /*  border: 4px solid var(--nighthawk-color) */
 
   padding-bottom: 8px;
-  border-bottom: 4px solid var(--nighthawk-color);
+ 
 }
 
 .form-formatting {
