@@ -83,7 +83,7 @@ export default function UserDetail() {
 
             <main>
                 <div className="bottom-lvl-formatting">
-                    <span>{user.name}'s dreams, age: {user.age}</span>
+                    <span>{user.name}'s ({user.age}) dreams</span>
                     <Link 
                         to={`/dream/create?user=${params.id}`}
                         className="dream">

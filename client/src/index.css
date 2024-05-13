@@ -23,7 +23,7 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: inherit;/*  #646cff; */
   text-decoration: none;
 }
 
@@ -89,6 +89,23 @@ aside button {
   margin: 0 auto;
 }
 
+.dream-short-formatting {
+  /* display: flex; */
+  
+  height: 20px;
+  width: 400px;
+
+ /*  border: 1px solid var(--dream-color);
+  border-radius: 1px; */
+
+  white-space: nowrap;
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+ /*  align-items: center; */
+}
+
+
 form li {
   display: flex;
 }
@@ -143,6 +160,7 @@ button {
   color: var(--dream-color);
   font-family: Sen;
  /*  font-size: large; */
+  /* background-color: aqua; */
 }
 
 ul {
