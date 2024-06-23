@@ -22,7 +22,8 @@ export default function DreamForm() {
             setIsNew(false);
 
             const response = await fetch(
-                `http://localhost:3000/dream/${id}`
+                `https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/${id}`
+                /* `http://localhost:3000/dream/${id}` */
             );
 
             if (!response.ok) {
@@ -59,7 +60,7 @@ export default function DreamForm() {
         try {
             let response;
             if (isNew) {
-                response = await fetch("http://localhost:3000/dream/", {
+                response = await fetch("https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/" /* "http://localhost:3000/dream/" */, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -68,7 +69,7 @@ export default function DreamForm() {
                 });
                 navigate(`/user/${form.dreamer}`);
             } else {
-                response = await fetch(`http://localhost:3000/dream/${params.id}`, {
+                response = await fetch(`https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/${params.id}` /* `http://localhost:3000/dream/${params.id}` */, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json"

@@ -10,7 +10,7 @@ export default function UserList() {
      */
     useEffect(() => {
         async function getUsers() {
-            const response = await fetch("http://localhost:3000/users/");
+            const response = await fetch("https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/users/" /* "http://localhost:3000/users/" */);
             if (!response.ok) {
                 const message = `An error occurred: ${response.statusText}`;
                 console.error(message);
