@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import CustomDropdown from "./CustomDropdown";
+
+const DREAM_TYPES = [
+    { id: "option-0", name: "Ordinary" },
+    { id: "option-1", name: "Nightmare" },
+    { id: "option-2", name: "Dream come true" }
+]
 
 export default function DreamForm() {
 
@@ -8,6 +15,8 @@ export default function DreamForm() {
         quality: "",
         dreamer: ""
     });
+    const [preselectedQuality, setPreselectedQuality] = useState(""); 
+
     const [isNew, setIsNew] = useState(true);
     const params = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -15,6 +24,7 @@ export default function DreamForm() {
     
 
     useEffect(() => {
+        console.log("hi");
         async function getDream() {
             const id = params.id?.toString();
             if (!id) return;
@@ -23,7 +33,6 @@ export default function DreamForm() {
 
             const response = await fetch(
                 `https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/${id}`
-                /* `http://localhost:3000/dream/${id}` */
             );
 
             if (!response.ok) {
@@ -37,14 +46,15 @@ export default function DreamForm() {
                 navigate("/");
                 return;
             }
-            setForm({
+            updateForm({
                 summary: res.dream.summary,
                 quality: res.dream.quality,
                 dreamer: res.dream.dreamer
             });
+            setPreselectedQuality(res.dream.quality);
         }
         getDream();
-        if (isNew) setForm({ dreamer: searchParams.get("user") });
+        if (isNew) updateForm({ dreamer: searchParams.get("user") });
         return;    
     }, [params.id, searchParams, navigate]);
 
@@ -54,13 +64,14 @@ export default function DreamForm() {
         });
     }
 
-    async function onSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         const dream = { ...form };
-        try {
+        console.log(dream);
+        /* try {
             let response;
             if (isNew) {
-                response = await fetch("https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/" /* "http://localhost:3000/dream/" */, {
+                response = await fetch("https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -69,7 +80,7 @@ export default function DreamForm() {
                 });
                 navigate(`/user/${form.dreamer}`);
             } else {
-                response = await fetch(`https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/${params.id}` /* `http://localhost:3000/dream/${params.id}` */, {
+                response = await fetch(`https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/${params.id}`, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json"
@@ -85,11 +96,11 @@ export default function DreamForm() {
             console.error("A problem occurred adding or updating a dream: ", error);
         } finally {
             setForm({ summary: "", quality: "", dreamer: "" });
-        }
+        } */
     }    
 
     return (
-        <form className="form-formatting" onSubmit={onSubmit}>
+        <form className="form-formatting widget" onSubmit={handleSubmit}>
             <label htmlFor="summary">
                 Summary: 
             </label>
@@ -99,13 +110,13 @@ export default function DreamForm() {
                 placeholder="Once upon a time..."
                 value={form.summary}
                 onChange={
-                    (e) => updateForm({ summary: e.target.value })
+                    (event) => updateForm({ summary: event.target.value })
                 }>
             </textarea>
-            <label htmlFor="quality">
+            <label htmlFor="dreamType">
                 Quality:
             </label>
-            <input 
+{/*             <input 
                 type="text"
                 name="quality"
                 id="quality"
@@ -113,7 +124,11 @@ export default function DreamForm() {
                 value={form.quality}
                 onChange={
                     (e) => updateForm({ quality: e.target.value })
-                } />
+                } /> */}
+            <CustomDropdown 
+                dreamTypes={DREAM_TYPES} 
+                updateForm={updateForm}
+                preselectedQuality={preselectedQuality}/>
             <button type="submit" className="dream">
                 Save
             </button>

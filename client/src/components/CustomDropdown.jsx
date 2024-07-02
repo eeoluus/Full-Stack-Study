@@ -1,147 +1,144 @@
-export default function CustomDropdown() {
+import { useEffect, useState } from 'react';
+import './CustomDropdown.css';
 
-    function deactivateSelect(select) {
-        if (!select.classList.contains("active")) return;
+export default function CustomDropdown(props) {
 
-        const optList = select.querySelector(".optList");
-        optList.classList.add("hidden");
-        select.classList.remove("active");
+    const index = 0;
 
-        manageFlow(optList);
-    }
+    const [dreamTypes, setDreamTypes] = useState(props.dreamTypes);
 
-    function activateSelect(select, selectList) {
-        if (select.classList.contains("active")) return;
+    const [selectActive, setSelectActive] = useState(false);
 
-        selectList.forEach(deactivateSelect);
-        select.classList.add("active");
-    }
+    const [optListHidden, setOptListHidden] = useState(true);
 
-    function toggleOptList(select, show) {
-        const optList = select.querySelector("optList");
-        optList.classList.toggle("hidden");
+    const [selectedValue, setSelectedValue] = useState(props.dreamTypes[index].name);
 
-        manageFlow(optList);
-    }
+    const [selectedIndex, setSelectedIndex] = useState(index);
 
+    const updateForm = props.updateForm;
 
-    function manageFlow(optList) { /* Prevent overlap by the absolutely positioned optList */
-        const selectList = document.querySelector(".select");
-
-        if (!optList.classList.contains("hidden")) {
-            const emptyDiv = document.createElement("div");
-            emptyDiv.setAttribute("style", `height: ${optList.offsetHeight - 16}px`);
-            selectList.insertAdjacentElement("afterend", emptyDiv);
+    useEffect(() => {
+        const preselectedQuality = props.preselectedQuality
+        if (preselectedQuality) {
+            const preselectedQualityIndex = dreamTypes
+                .map((dreamType) => dreamType.name)
+                .indexOf(preselectedQuality);
+            updateForm({ quality: preselectedQuality });
+            setSelectedValue(preselectedQuality);
+            setSelectedIndex(preselectedQualityIndex)
+            highlightOption(preselectedQuality);
         } else {
-            selectList.nextElementSibling.remove();
+            updateForm({ quality: selectedValue });
+            highlightOption(selectedValue);
         }
+        /* updateForm({ quality: selectedValue });
+        highlightOption(selectedValue); */
+    }, [props.preselectedQuality])
+
+    function deactivateSelect() {
+        setOptListHidden(true);
+        setSelectActive(false);
     }
 
-    function highlightOption(select, option) {
-        const optionList = select.querySelectorAll(".option");
-
-        optionList.forEach((other) => {
-            other.classList.remove("highlight");
-        });
-        option.classList.add("highlight");
+    function activateSelect() {
+        /* selectList.forEach(deactivateSelect); */ // How to implement this?
+        setSelectActive(true);
+    }
+    function handleClick(event, index) {
+        const name = event.target.innerHTML;
+        updateValue(name, index);
+    }
+    function updateValue(name, index) {
+        updateForm({ quality: name });
+        setSelectedIndex(index);
+        setSelectedValue(name);
+        highlightOption(name);
     }
 
-    function updateValue(select, index) {
-        const nativeWidget = select.previousElementSibling;
-        const value = select.querySelector(".value");
-        const optionList = select.querySelectorAll(".option");
-
-        nativeWidget.selectedIndex = index;
-        value.innerHTML = optionList[index].innerHTML;
-        highlightOption(select, optionList[index]);
+    function handleMouseOver(event) {
+        const name = event.target.innerHTML;
+        highlightOption(name);
     }
 
-    function getIndex(select) {
-        const nativeWidget = select.previousElementSibling;
-
-        return nativeWidget.selectedIndex;
-    }
-
-    // ------------- //
-    // Event binding //
-    // ------------- //
-
-    window.addEventListener("load", () => {
-        const form = document.querySelector("form");
-        form.classList.remove("no-widget");
-        form.classList.add("widget");
-    });
-
-    window.addEventListener("load", () => {
-        const selectList = document.querySelectorAll(".select");
-
-        selectList.forEach((select) => {
-            const optionList = select.querySelectorAll(".option");
-            optionList.forEach((option) => {
-                option.addEventListener("mouseover", () => {
-                    highlightOption(select, option);
-                });
-            });
-        });
-        select.addEventListener("click", (event) => {
-            toggleOptList(select);
-        });
-        select.addEventListener("focus", (event) => {
-            activateSelect(select, selectList);
-        });
-        select.addEventListener("blur", (event) => {
-            deactivateSelect(select);
-        });
-    });
-    
-    window.addEventListener("load", () => {
-        const selectList = document.querySelectorAll(".select");
-
-        selectList.forEach((select) => {
-            const optionList = select.querySelectorAll(".option");
-            const selectedIndex = getIndex(select);
-
-            select.tabIndex = 0;
-            select.previousElementSibling.tabIndex = -1;
-
-            updateValue(select, selectedIndex);
-
-            optionList.forEach((option, index) => {
-                option.addEventListener("click", (event) => {
-                    updateValue(select, index);
-                });
-            });
-        });
-
-        select.addEventListener("keyup", (event) => {
-            let index = getIndex(select);
-
-            if (event.key === "Escape") {
-                deactivateSelect(select);
+    function highlightOption(name) {
+        const newDreamTypes = dreamTypes.map((dreamType) => {
+            return {
+                ...dreamType, 
+                highlight: dreamType.name === name
             }
-            if (event.key === "ArrowDown" && index < optionList.length - 1) {
-                index++;
-            }
-            if (event.key === "ArrowUp" && index > 0) {
-                index--;
-            }
-
-            updateValue(select, index);
         })
-    })
+        setDreamTypes(newDreamTypes);
+    }
+
+    function handleKeyDown(event) {
+        
+        let newSelectedIndex = selectedIndex;
+
+        if (event.key === "Escape" || event.key === "Enter") {
+            deactivateSelect();
+        }
+        if (event.key === "Tab" && !optListHidden) {
+            event.preventDefault();
+            deactivateSelect();
+        }
+        if (event.key === "ArrowDown") {
+            event.preventDefault();
+            if (selectedIndex < dreamTypes.length - 1) newSelectedIndex++;
+        }
+        if (event.key === "ArrowUp") {
+            event.preventDefault();
+            if (selectedIndex > 0) newSelectedIndex--;
+        }
+
+        setSelectedIndex(newSelectedIndex);
+
+        const newSelectedValue = dreamTypes[newSelectedIndex].name;
+
+        updateValue(newSelectedValue, newSelectedIndex);
+    }
+
+    const dreamTypeList = dreamTypes.map((dreamType, index) => (
+            <li 
+                key={dreamType.id}
+                className={`option${dreamType.highlight ? " highlight" : ""}`}
+                onMouseOver={handleMouseOver}
+                onClick={(event) => handleClick(event, index)}>
+                {dreamType.name}
+            </li>
+        )
+    )
+
+    /* const dreamTypeListNative = dreamTypes.map((dreamType, index) => (
+        <option 
+            key={dreamType.id}
+            value={dreamType.name}>
+            {dreamType.name}
+        </option>
+    )) */
 
     return (
         <>
-            <select className="dreamType">
-                <option>Ordinary</option>
-                <option>Nightmare</option>
-            </select>
+            {/* <select 
+                id="dreamType"
+                name="quality"
+                value={selectedValue}
+                onChange={(event) => setSelectedValue(event.target.value)}
+                className="dreamType" 
+                tabIndex={0}>
+                {dreamTypeListNative}
+            </select> */}
 
-            <div className="select">
-                <span className="value">Ordinary</span>
-                <menu className="optList hidden">
-                    <li className="option">Ordinary</li>
-                    <li className="option">Nightmare</li>
+            <div
+                className={`select${selectActive ? " active" : ""}`}
+                onClick={() => setOptListHidden(!optListHidden)}
+                onFocus={activateSelect}
+                onBlur={deactivateSelect}
+                onKeyDown={handleKeyDown}
+                tabIndex={0}>
+                <span className="value">{selectedValue}</span>
+                <menu 
+                    className={`optList${optListHidden ? " hidden" : ""}`}>
+                    {dreamTypeList}
                 </menu>
             </div>
         </>
