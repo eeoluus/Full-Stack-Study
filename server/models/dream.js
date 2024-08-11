@@ -7,9 +7,10 @@ const dreamSchema = Schema({
     quality: {
         type: String,
         required: true,
-        enum: ["Ordinary", "Nightmare"]
+        enum: ["Ordinary", "Nightmare", "Dream come true"]
     },
     dreamer: { type: Schema.Types.ObjectId, ref: "User", required: true }
 });
+
 
 export default mongoose.model("Dream", dreamSchema);

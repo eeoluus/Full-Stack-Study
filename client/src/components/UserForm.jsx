@@ -8,20 +8,22 @@ export default function UserForm() {
         age: ""
     });
     const [isNew, setIsNew] = useState(true);
+
+    const [nameValidationActive, setNameValidationActive] = useState(false);
+    const [ageValidationActive, setAgeValidationActive] = useState(false);
+    const [agePatternMismatch, setAgePatternMismatch] = useState(false);
+
     const params = useParams();
     const navigate = useNavigate();
+
+    const apiUri = "http://localhost:3000/user" // "https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/user"
 
     useEffect(() => {
         async function getUser() {
             const id = params.id?.toString() || undefined;
             if (!id) return;
-
             setIsNew(false);
-
-            const response = await fetch(
-                `https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/user/${id}`
-                /* `http://localhost:3000/user/${id}` */
-            );
+            const response = await fetch(`${apiUri}/${id}`);
             if (!response.ok) {
                 const message = `An error occurred: ${response.statusText}`;
                 console.error(message);
@@ -48,26 +50,38 @@ export default function UserForm() {
         });
     }
 
-    async function onSubmit(e) {
-        e.preventDefault();
+    function handleNameChange(event) {
+        setNameValidationActive(true);
+        updateForm({ name: event.target.value });
+    }
+
+    function handleAgeChange(event) {
+        setAgeValidationActive(true);
+        updateForm({ age: event.target.value });
+        setAgePatternMismatch(event.target.validity.patternMismatch);
+    }
+
+    async function onSubmit(event) {
+        event.preventDefault();
+        if (!form.name || !form.age || agePatternMismatch) {
+            setNameValidationActive(true);
+            setAgeValidationActive(true);
+            return;
+        }
         const user = { ...form };
         try {
             let response;
             if (isNew) {
-                response = await fetch("https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/user" /* "http://localhost:3000/user" */, {
+                response = await fetch(apiUri, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(user)
                 });
                 navigate("/");
             } else {
-                response = await fetch(`https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/user/${params.id}` /* `http://localhost:3000/user/${params.id}` */, {
+                response = await fetch(`${apiUri}/${params.id}`, {
                     method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(user)
                 });
                 navigate(`/user/${params.id}`);
@@ -83,31 +97,62 @@ export default function UserForm() {
     }
 
     return (
-        <form className="form-formatting" onSubmit={onSubmit}>
+        <form 
+            className="form-formatting"
+            noValidate 
+            onSubmit={onSubmit}>
             <label htmlFor="name">
                 Name:
             </label>
-            <input 
-                type="text"
-                name="name"
-                id="name"
-                placeholder="JaneDoe"
-                value={form.name}
-                onChange={
-                    (e) => updateForm({ name: e.target.value })
-                } />
+            <div>
+                <input 
+                    type="text"
+                    name="name"
+                    id="name"
+                    className={
+                        nameValidationActive && !form.name 
+                        ? "with-error" 
+                        : ""
+                    }
+                    placeholder="JaneDoe"
+                    required
+                    value={form.name}
+                    onChange={handleNameChange} />
+                {nameValidationActive && !form.name && <div 
+                    className="error" 
+                    aria-live="polite">
+                    This field cannot be empty.
+                </div>}
+            </div>
             <label htmlFor="age">
                 Age:
             </label>
-            <input 
-                type="text"
-                name="age"
-                id="age"
-                placeholder="1"
-                value={form.age}
-                onChange={
-                    (e) => updateForm({ age: e.target.value })
-                } />
+            <div>
+                <input 
+                    type="text"
+                    name="age"
+                    id="age"
+                    className={
+                        ageValidationActive && (!form.age || agePatternMismatch) 
+                        ? "with-error" 
+                        : ""
+                    }
+                    placeholder="1"
+                    required
+                    pattern="\b([1-9]|[1-9][0-9])\b"
+                    value={form.age}
+                    onChange={handleAgeChange} />
+                {ageValidationActive && !form.age && <div 
+                    className="error" 
+                    aria-live="polite">
+                    This field cannot be empty.
+                </div>}
+                {ageValidationActive && agePatternMismatch && <div 
+                    className="error" 
+                    aria-live="polite">
+                    Enter a number between 1 and 99.
+                </div>}
+            </div>
             <button type="submit" className="user">
                 Save
             </button>

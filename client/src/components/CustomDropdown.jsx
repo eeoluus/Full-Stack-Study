@@ -31,8 +31,6 @@ export default function CustomDropdown(props) {
             updateForm({ quality: selectedValue });
             highlightOption(selectedValue);
         }
-        /* updateForm({ quality: selectedValue });
-        highlightOption(selectedValue); */
     }, [props.preselectedQuality])
 
     function deactivateSelect() {
@@ -108,26 +106,8 @@ export default function CustomDropdown(props) {
         )
     )
 
-    /* const dreamTypeListNative = dreamTypes.map((dreamType, index) => (
-        <option 
-            key={dreamType.id}
-            value={dreamType.name}>
-            {dreamType.name}
-        </option>
-    )) */
-
     return (
         <>
-            {/* <select 
-                id="dreamType"
-                name="quality"
-                value={selectedValue}
-                onChange={(event) => setSelectedValue(event.target.value)}
-                className="dreamType" 
-                tabIndex={0}>
-                {dreamTypeListNative}
-            </select> */}
-
             <div
                 className={`select${selectActive ? " active" : ""}`}
                 onClick={() => setOptListHidden(!optListHidden)}
