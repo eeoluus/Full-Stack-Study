@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import DreamDetailLayout from "./DreamDetailLayout.jsx";
 
 export default function DreamDetail() {
-
     const [dream, setDream] = useState({
         summary: undefined,
         quality: undefined,
@@ -15,19 +14,16 @@ export default function DreamDetail() {
     useEffect(() => {
         async function getDream() {
             const id = params.id?.toString() || undefined;
-
             if (!id) return;
             const response = await fetch(
                 `https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/${id}`
                 /* `http://localhost:3000/dream/${id}` */
             );
-
             if (!response.ok) {
                 const message = `An error occurred: ${response.statusText}`;
                 console.error(message);
                 return;
             }
-
             const res = await response.json();
             if (!res) {
                 console.warn(`Record with id ${id} not found`);
@@ -52,26 +48,9 @@ export default function DreamDetail() {
     }
 
     return (
-        <div className="top-lvl-formatting">
-            <aside>
-                <Link 
-                    to={`/dream/${params.id}/update`}
-                    className="dream">
-                    Edit
-                </Link>
-                <button
-                    type="button"
-                    className="dream"
-                    onClick={
-                        () => {deleteDream(params.id)}
-                    }>
-                    Delete
-                </button>
-            </aside>
-
-            <main>
-                Here is your {dream.quality}: {dream.summary} 
-            </main>
-        </div>
+        <DreamDetailLayout 
+            dream={dream}
+            params={params}
+            deleteDream={deleteDream}/>
     );
 }

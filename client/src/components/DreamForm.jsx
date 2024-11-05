@@ -62,8 +62,8 @@ export default function DreamForm() {
         });
     }
 
-    async function handleSubmit(e) {
-        e.preventDefault();
+    async function handleSubmit(event) {
+        event.preventDefault();
         if (!form.summary || !form.quality) {
             setSummaryValidationActive(true);
             return;
@@ -103,7 +103,6 @@ export default function DreamForm() {
 
     return (
         <form 
-            className="form-formatting widget" 
             noValidate
             onSubmit={handleSubmit}>
             <label htmlFor="summary">
@@ -113,7 +112,11 @@ export default function DreamForm() {
                 <textarea 
                     name="summary"
                     id="summary"
-                    className={summaryValidationActive && !form.summary ? "with-error" : ""}
+                    className={
+                        summaryValidationActive && !form.summary 
+                            ? "with-error" 
+                            : ""
+                    }
                     placeholder="Once upon a time..."
                     required
                     value={form.summary}
@@ -122,7 +125,8 @@ export default function DreamForm() {
                         (event) => updateForm({ summary: event.target.value })
                     }>
                 </textarea>
-                {summaryValidationActive && !form.summary && <div 
+                {summaryValidationActive && !form.summary && 
+                <div 
                     className="error" 
                     aria-live="polite">
                     This field cannot be empty.
@@ -135,7 +139,9 @@ export default function DreamForm() {
                 dreamTypes={DREAM_TYPES} 
                 updateForm={updateForm}
                 preselectedQuality={preselectedQuality}/>
-            <button type="submit" className="dream">
+            <button 
+                type="submit" 
+                className="dream">
                 Save
             </button>
         </form>

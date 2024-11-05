@@ -11,7 +11,10 @@ export default function UserList() {
      */
     useEffect(() => {
         async function getUsers() {
-            const response = await fetch("https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/users/" /* "http://localhost:3000/users/" */);
+            const response = await fetch(
+                "https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/users/" 
+                /* "http://localhost:3000/users/" */
+            );
             if (!response.ok) {
                 const message = `An error occurred: ${response.statusText}`;
                 console.error(message);
@@ -26,18 +29,24 @@ export default function UserList() {
 
     const userList = users.map(
         (user) => (
-            <User 
-                id={user._id}
-                name={user.name}
-                age={user.age}
-                key={user._id}
-            />
+            <li>
+                <User 
+                    id={user._id}
+                    name={user.name}
+                    age={user.age}
+                    key={user._id}
+                />
+            </li>
         )
     )
 
     return (
-        <ul>
-            {userList}
-        </ul>
+        <>
+            <h2>Users</h2>
+            <ul className="user-list">
+                {userList}
+            </ul>
+        </>
+        
     );
 }

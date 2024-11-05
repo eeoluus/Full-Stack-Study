@@ -16,7 +16,9 @@ export default function UserForm() {
     const params = useParams();
     const navigate = useNavigate();
 
-    const apiUri = "http://localhost:3000/user" // "https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/user"
+    const apiUri = process.env.NODE_ENV === "development"
+        ? "http://localhost:3000/user"
+        : "https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/user";
 
     useEffect(() => {
         async function getUser() {
@@ -98,7 +100,6 @@ export default function UserForm() {
 
     return (
         <form 
-            className="form-formatting"
             noValidate 
             onSubmit={onSubmit}>
             <label htmlFor="name">
@@ -111,8 +112,8 @@ export default function UserForm() {
                     id="name"
                     className={
                         nameValidationActive && !form.name 
-                        ? "with-error" 
-                        : ""
+                            ? "with-error" 
+                            : ""
                     }
                     placeholder="JaneDoe"
                     required
@@ -134,20 +135,22 @@ export default function UserForm() {
                     id="age"
                     className={
                         ageValidationActive && (!form.age || agePatternMismatch) 
-                        ? "with-error" 
-                        : ""
+                            ? "with-error" 
+                            : ""
                     }
                     placeholder="1"
                     required
                     pattern="\b([1-9]|[1-9][0-9])\b"
                     value={form.age}
                     onChange={handleAgeChange} />
-                {ageValidationActive && !form.age && <div 
+                {ageValidationActive && !form.age && 
+                <div 
                     className="error" 
                     aria-live="polite">
                     This field cannot be empty.
                 </div>}
-                {ageValidationActive && agePatternMismatch && <div 
+                {ageValidationActive && agePatternMismatch && 
+                <div 
                     className="error" 
                     aria-live="polite">
                     Enter a number between 1 and 99.

@@ -5,10 +5,10 @@ export default function Navbar() {
         <header>
             <nav>
                 <NavLink to="/" className="nighthawk">
-                    Nighthawk
+                    <h1>Nighthawk</h1>
                 </NavLink>
                 <NavLink to="/user/create" className="user">
-                    Create a new user
+                    <h4>New user</h4>
                 </NavLink>
             </nav>
         </header>
