@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+/* import { Link } from "react-router-dom";
 
 export default function OldDetailLayout(props) {
     const params = props.params;
@@ -39,4 +39,4 @@ export default function OldDetailLayout(props) {
             </main>
         </div>
     );
-}
+} */

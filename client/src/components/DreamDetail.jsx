@@ -17,7 +17,6 @@ export default function DreamDetail() {
             if (!id) return;
             const response = await fetch(
                 `https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/${id}`
-                /* `http://localhost:3000/dream/${id}` */
             );
             if (!response.ok) {
                 const message = `An error occurred: ${response.statusText}`;
@@ -41,9 +40,10 @@ export default function DreamDetail() {
     }, [params.id, navigate]);
 
     async function deleteDream(id) {
-        await fetch(`https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/${id}` /* `http://localhost:3000/dream/${id}` */, {
-            "method": "DELETE"
-        });
+        await fetch(
+            `https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream/${id}`, 
+            { "method": "DELETE" }
+        );
         navigate(`/user/${dream.dreamer._id}`);
     }
 

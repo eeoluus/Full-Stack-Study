@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Misc
+components/CustomDropdownOld.jsx
+components/OldDetailLayout.jsx

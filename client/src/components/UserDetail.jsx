@@ -17,7 +17,6 @@ export default function UserDetail() {
             if (!id) return;
             const response = await fetch(
                 `https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/user/${id}`
-                /* `http://localhost:3000/user/${id}` */
             );
             if (!response.ok) {
                 const message = `An error occurred: ${response.statusText}`;
@@ -43,8 +42,7 @@ export default function UserDetail() {
 
     async function deleteUser(id) {
         await fetch(
-            `https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/user/${id}` 
-            /* `http://localhost:3000/user/${id}` */, 
+            `https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/user/${id}`, 
             { "method": "DELETE" }
         );
         navigate("/");
