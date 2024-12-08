@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
-import NewCustomDropdown from "./NewCustomDropdown";
+import CustomDropdown from "./CustomDropdown";
 
 const DREAM_TYPES = [
     { id: "option-0", name: "Ordinary" },
@@ -147,7 +147,7 @@ export default function DreamForm() {
             <label htmlFor="dreamType">
                 Quality:
             </label>
-            <NewCustomDropdown 
+            <CustomDropdown 
                 dreamTypes={DREAM_TYPES} 
                 updateForm={updateForm}
                 preselectedQuality={preselectedQuality}/>
