@@ -16,6 +16,8 @@ export default function CustomDropdown(props) {
 
     const updateForm = props.updateForm;
 
+    /* const optListHidden = false; */
+
     useEffect(() => {
         const preselectedQuality = props.preselectedQuality
         if (preselectedQuality) {
@@ -106,20 +108,19 @@ export default function CustomDropdown(props) {
     )
 
     return (
-        <>
-            <div
-                className={`select${selectActive ? " active" : ""}`}
-                onClick={() => setOptListHidden(!optListHidden)}
-                onFocus={activateSelect}
-                onBlur={deactivateSelect}
-                onKeyDown={handleKeyDown}
-                tabIndex={0}>
-                <span className="value">{selectedValue}</span>
-                <menu 
-                    className={`optList${optListHidden ? " hidden" : ""}`}>
-                    {dreamTypeList}
-                </menu>
-            </div>
-        </>
+        <div
+            className="select"
+            onClick={() => setOptListHidden(!optListHidden)}
+            onFocus={activateSelect}
+            onBlur={deactivateSelect}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}>
+            <div className="value">{selectedValue}</div>
+            {!optListHidden && 
+            <menu 
+                className="optList">
+                {dreamTypeList}
+            </menu>}
+        </div>
     )
 }

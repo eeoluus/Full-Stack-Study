@@ -7,12 +7,12 @@ export default function UserForm() {
         name: "",
         age: ""
     });
-    const [isNew, setIsNew] = useState(true);
-
+    
     const [nameValidationActive, setNameValidationActive] = useState(false);
     const [ageValidationActive, setAgeValidationActive] = useState(false);
     const [agePatternMismatch, setAgePatternMismatch] = useState(false);
 
+    const [isNew, setIsNew] = useState(true);
     const params = useParams();
     const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ export default function UserForm() {
         setAgePatternMismatch(event.target.validity.patternMismatch);
     }
 
-    async function onSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
         if (!form.name || !form.age || agePatternMismatch) {
             setNameValidationActive(true);
@@ -101,7 +101,7 @@ export default function UserForm() {
     return (
         <form 
             noValidate 
-            onSubmit={onSubmit}>
+            onSubmit={handleSubmit}>
             <label htmlFor="name">
                 Name:
             </label>
@@ -119,7 +119,9 @@ export default function UserForm() {
                     required
                     value={form.name}
                     onChange={handleNameChange} />
-                {nameValidationActive && !form.name && <div 
+                {/* Error message */}
+                {nameValidationActive && !form.name && 
+                <div 
                     className="error" 
                     aria-live="polite">
                     This field cannot be empty.
@@ -143,12 +145,14 @@ export default function UserForm() {
                     pattern="\b([1-9]|[1-9][0-9])\b"
                     value={form.age}
                     onChange={handleAgeChange} />
+                {/* Error message */}
                 {ageValidationActive && !form.age && 
                 <div 
                     className="error" 
                     aria-live="polite">
                     This field cannot be empty.
                 </div>}
+                {/* Error message */}
                 {ageValidationActive && agePatternMismatch && 
                 <div 
                     className="error" 

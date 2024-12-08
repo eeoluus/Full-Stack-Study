@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
-import CustomDropdown from "./CustomDropdown";
+import NewCustomDropdown from "./NewCustomDropdown";
 
 const DREAM_TYPES = [
     { id: "option-0", name: "Ordinary" },
@@ -15,17 +15,22 @@ export default function DreamForm() {
         quality: "",
         dreamer: ""
     });
+
+    const textareaRef = useRef(null);
+
     const [preselectedQuality, setPreselectedQuality] = useState(""); 
     const [summaryValidationActive, setSummaryValidationActive] = useState(false);
 
+    const [searchParams, setSearchParams] = useSearchParams();
     const [isNew, setIsNew] = useState(true);
     const params = useParams();
-    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     
     const apiUri = process.env.NODE_ENV === "development"
         ? "http://localhost:3000/dream"
         : "https://nighthawk-server1-bwxr7liqjq-lz.a.run.app/dream";
+
+    useLayoutEffect(resizeTextarea, [form.summary]);
 
     useEffect(() => {
         async function getDream() {
@@ -56,11 +61,17 @@ export default function DreamForm() {
         return;    
     }, [params.id, searchParams, navigate]);
 
+    function resizeTextarea() {
+        /* The upper value should be the same as in the relevant .css files. */
+        textareaRef.current.style.height = "2em";
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    };
+
     function updateForm(value) {
         return setForm((prev) => {
             return { ...prev, ...value };
         });
-    }
+    };
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -97,8 +108,9 @@ export default function DreamForm() {
         }
     }    
 
-    function handleSummaryInput() {
+    function handleChange(event) {
         setSummaryValidationActive(true);
+        updateForm({ summary: event.target.value });
     }
 
     return (
@@ -112,6 +124,7 @@ export default function DreamForm() {
                 <textarea 
                     name="summary"
                     id="summary"
+                    ref={textareaRef}
                     className={
                         summaryValidationActive && !form.summary 
                             ? "with-error" 
@@ -120,11 +133,10 @@ export default function DreamForm() {
                     placeholder="Once upon a time..."
                     required
                     value={form.summary}
-                    onInput={handleSummaryInput}
-                    onChange={
-                        (event) => updateForm({ summary: event.target.value })
-                    }>
+                    onChange={handleChange}
+                    >
                 </textarea>
+                {/* Error message */}
                 {summaryValidationActive && !form.summary && 
                 <div 
                     className="error" 
@@ -135,7 +147,7 @@ export default function DreamForm() {
             <label htmlFor="dreamType">
                 Quality:
             </label>
-            <CustomDropdown 
+            <NewCustomDropdown 
                 dreamTypes={DREAM_TYPES} 
                 updateForm={updateForm}
                 preselectedQuality={preselectedQuality}/>
